@@ -30,7 +30,52 @@ For now, see the <a href="https://github.com/vsmjs">vsmjs</a> project on GitHub.
 <p>
 Read about curation and how VSM works on: <a href="http://scicura.org/vsm">scicura.org/vsm</a>.
 </p>
+
+
+
+<br><br><br><br><hr>
 <p>
+Here is a minimal demo of how to use 'vsm-box' in your project.<br>
+Paste this code in a file 'test.html' and open it in your browser:
 </p>
+<br>
+
+
+
+
+<pre style="font-size: 12px; line-height: 14px;">
+&lt;html&gt;
+&lt;head&gt;
+  <b>&lt;script src="https://unpkg.com/vsm-dictionary-local@2.6.0/dist/vsm-dictionary-local.min.js"&gt;&lt;/script&gt;</b>
+  <b>&lt;script src="https://unpkg.com/vsm-dictionary-cacher@1.2.0/dist/vsm-dictionary-cacher.min.js"&gt;&lt;/script&gt;</b>
+  <b>&lt;script src="https://unpkg.com/vsm-box@0.3.0/dist/vsm-box.standalone.min.js"&gt;&lt;/script&gt;</b>
+&lt;/head&gt;
+
+&lt;body&gt;
+
+  <b>&lt;vsm-box autofocus=true&gt;&lt;/vsm-box&gt;</b>
+
+  &lt;br&gt;
+  &lt;textarea readonly&gt;&lt;/textarea&gt;
+&lt;/body&gt;
+
+&lt;script&gt;
+  var vsmbox = document.getElementsByTagName('vsm-box')[0];
+
+  <b>vsmbox.vsmDictionary = new (VsmDictionaryCacher(VsmDictionaryLocal)) ({
+    dictData: [ { id: 'http://d.org/A',  name: 'Aaa',  entries: [
+      { id: 'http://d.org/A/A:01', terms: [{ str: 'aaa' }, { str: 'aab' }] },
+      { id: 'http://d.org/A/A:03', terms: [{ str: 'abc' }], descr: 'example' }
+    ]}]
+  });</b>  // (Or use another dictionary interface, like <b>vsm-dictionary-bioportal</b>).
+
+
+  var text = document.getElementsByTagName('textarea')[0];  text.value = '';
+  function showOutput(e) { text.value = JSON.stringify(e.detail[0], null, 2) }
+  vsmbox.addEventListener('change', showOutput);
+&lt;/script&gt;
+&lt;/html&gt;</pre>
+
+<br><br>
 </body>
 </html>
