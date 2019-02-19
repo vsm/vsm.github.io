@@ -70,6 +70,12 @@ Paste this code in a file 'test.html' and open it in your browser:
   });</b>  // (Or use another dictionary interface, like <b>vsm-dictionary-bioportal</b>).
 
 
+  // Fill in something. (Uncomment this:)
+  //<b>vsmbox.initialValue =</b> {
+  //  terms: [ {}, { str: 'aaa', classID: 'http://d.org/A/A:01', instID: null }, {} ],
+  //  conns: [ { type: 'T', pos: [ 0, 1, 2 ] } ] };
+
+  // Show changes in the textarea.
   var text = document.getElementsByTagName('textarea')[0];  text.value = '';
   function showOutput(e) { text.value = JSON.stringify(e.detail[0], null, 2) }
   vsmbox.addEventListener('change', showOutput);
