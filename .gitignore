@@ -1,0 +1,11 @@
+node_modules/
+vsm-box*/
+x-*/
+y-*/
+z-*/
+.idea/
+2Do*
+secret*
+*.bat
+*.lnk
+*.sublime*
