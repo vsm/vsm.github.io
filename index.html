@@ -74,8 +74,8 @@ For example: paste this in a file called 'test.html', and open it in your browse
   var vsmbox = document.getElementsByTagName('vsm-box')[0];
 
   // This connects the vsm-box to a vsm-dictionary.
-  // Here, we use some local demo dictionary-data.
-  // (Alternative: we could use a real dictionary interface like vsm-dictionary-bioportal).
+  // Here we create some local dictionary-data, as a demo.
+  // (Alternatively, we could use a real dictionary interface like vsm-dictionary-bioportal).
   <b>vsmbox.vsmDictionary = new</b> (VsmDictionaryCacher(<b>VsmDictionaryLocal</b>)) ({
     dictData: [ { id: 'http://d.org/A',  name: 'Aaa',  entries: [
       { id: 'http://d.org/A/A:01', terms: [{ str: 'aaa' }, { str: 'aab' }] },
@@ -84,7 +84,7 @@ For example: paste this in a file called 'test.html', and open it in your browse
   });
 
 
-  //// This would also fill the vsm-box with a template structure:
+  //// If you un-comment this, it will fill the vsm-box with a template structure:
   //<b>vsmbox.initialValue =</b> {
   //  terms: [ { placeholder: 'name' }, { str: 'aaa', classID: 'http://d.org/A/A:01', instID: null }, {} ],
   //  conns: [ { type: 'T', pos: [ 0, 1, 2 ] } ] };
