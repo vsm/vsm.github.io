@@ -29,15 +29,15 @@ h1 {
 </p>
 
 <p>
-This page will one day unite all info about VSM
-(see the extensive <a href="http://scicura.org/vsm">VSM-pages</a>),
-and its supporting software
-(see the <a href="https://github.com/vsmjs">vsmjs</a> project's modules).
+
+This place will soon combine all information about VSM and its supporting software.
+For now, see the extensive <a href="http://scicura.org/vsm">VSM-pages</a>,
+and readmes of repositories in the <a href="https://github.com/vsmjs">vsmjs</a> organization.
 </p>
 <p>
-The core of the vsmjs project is the <a href="https://github.com/vsmjs/vsm-box">vsm-box</a>
-user-interface / web-component.
-Check the <a href="http://scicura.org/vsm-box">live vsm-box demo</a>.
+The central repository is the <a href="https://github.com/vsmjs/vsm-box">vsm-box</a>
+user-interface (a web-page element), which can be tried out live
+<a href="http://scicura.org/vsm-box">here</a> (it's the smaller rectangle on top).
 </p>
 
 
@@ -45,8 +45,8 @@ Check the <a href="http://scicura.org/vsm-box">live vsm-box demo</a>.
 
 
 <p>
-Here is a minimal demo of how to use 'vsm-box' in your project.<br>
-Paste this code in a file 'test.html' and open it in your browser:
+It's easy to use a vsm-box in your project.
+For example: paste this in a file 'test.html', and open it in your browser:
 </p>
 <br>
 
@@ -55,14 +55,16 @@ Paste this code in a file 'test.html' and open it in your browser:
 &lt;!doctype html&gt;
 &lt;html&gt;
 &lt;head&gt;
-  <b>&lt;script src="https://unpkg.com/vsm-dictionary-local@^2.6.0/dist/vsm-dictionary-local.min.js"&gt;&lt;/script&gt;</b>
-  <b>&lt;script src="https://unpkg.com/vsm-dictionary-cacher@^1.2.0/dist/vsm-dictionary-cacher.min.js"&gt;&lt;/script&gt;</b>
+  <!-- This loads the vsm-box module, a vsm-dictionary that provides terms+identifiers, and an optional cache-layer. -->
   <b>&lt;script src="https://unpkg.com/vsm-box@^1.0.0/dist/vsm-box.standalone.min.js"&gt;&lt;/script&gt;</b>
+  <b>&lt;script src="https://unpkg.com/vsm-dictionary-local@^2.6.0/dist/vsm-dictionary-local.min.js"&gt;&lt;/script&gt;</b>
+  &lt;script src="https://unpkg.com/vsm-dictionary-cacher@^1.2.0/dist/vsm-dictionary-cacher.min.js"&gt;&lt;/script&gt;
 &lt;/head&gt;
 
 &lt;body&gt;
 
-  <b>&lt;vsm-box autofocus=true&gt;&lt;/vsm-box&gt;</b>
+  <!-- This places one vsm-box component on the web page. -->
+  <b>&lt;vsm-box </b>autofocus=true<b>&gt;&lt;/vsm-box&gt;</b>
 
   &lt;br&gt;
   &lt;textarea readonly&gt;&lt;/textarea&gt;
@@ -71,20 +73,22 @@ Paste this code in a file 'test.html' and open it in your browser:
 &lt;script&gt;
   var vsmbox = document.getElementsByTagName('vsm-box')[0];
 
-  <b>vsmbox.vsmDictionary = new (VsmDictionaryCacher(VsmDictionaryLocal)) ({
+  // This connects the vsm-box to a vsm-dictionary. Here, we use some local demo dictionary-data.
+  // (Alternative: use a real dictionary interface like <b>vsm-dictionary-bioportal</b>).
+  <b>vsmbox.vsmDictionary = new</b> (VsmDictionaryCacher(<b>VsmDictionaryLocal</b>)) ({
     dictData: [ { id: 'http://d.org/A',  name: 'Aaa',  entries: [
       { id: 'http://d.org/A/A:01', terms: [{ str: 'aaa' }, { str: 'aab' }] },
       { id: 'http://d.org/A/A:03', terms: [{ str: 'abc' }], descr: 'example' }
     ]}]
-  });</b>  // (Or use another dictionary interface, like <b>vsm-dictionary-bioportal</b>).
+  });
 
 
-  // Uncomment this to fill in something:
+  //// This would also fill the vsm-box with a template structure:
   //<b>vsmbox.initialValue =</b> {
-  //  terms: [ {}, { str: 'aaa', classID: 'http://d.org/A/A:01', instID: null }, {} ],
+  //  terms: [ { placeholder: 'name' }, { str: 'aaa', classID: 'http://d.org/A/A:01', instID: null }, {} ],
   //  conns: [ { type: 'T', pos: [ 0, 1, 2 ] } ] };
 
-  // Show changes in the textarea.
+  // This also shows the vsm-box's data content, live in a textfield below it:
   var text = document.getElementsByTagName('textarea')[0];  text.value = '';
   function showOutput(e) { text.value = JSON.stringify(e.detail[0], null, 2) }
   vsmbox.addEventListener('change', showOutput);
@@ -96,8 +100,8 @@ Paste this code in a file 'test.html' and open it in your browser:
 
 
 <p>
-Examples of vsm-box use &amp; capabilities.
-For full info, see its <a href="https://github.com/vsmjs/vsm-box">readme</a>.
+Examples of how to use a vsm-box or read its content.
+Full information is <a href="https://github.com/vsmjs/vsm-box">here</a>.
 </p>
 <br>
 
@@ -121,7 +125,7 @@ For full info, see its <a href="https://github.com/vsmjs/vsm-box">readme</a>.
 
 <br>
 <p>
-For full info see vsm-box's <a href="https://github.com/vsmjs/vsm-box">readme</a>.
+For full information, see vsm-box's <a href="https://github.com/vsmjs/vsm-box">readme</a>.
 </p>
 
 <br><br>
