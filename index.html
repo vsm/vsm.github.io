@@ -45,8 +45,8 @@ user-interface (a web-page element), which can be tried out live
 
 
 <p>
-It's easy to use a vsm-box in your project.
-For example: paste this in a file 'test.html', and open it in your browser:
+It is easy to use a vsm-box in your project.
+For example: paste this in a file called 'test.html', and open it in your browser:
 </p>
 <br>
 
@@ -55,7 +55,7 @@ For example: paste this in a file 'test.html', and open it in your browser:
 &lt;!doctype html&gt;
 &lt;html&gt;
 &lt;head&gt;
-  <!-- This loads the vsm-box module, a vsm-dictionary that provides terms+identifiers, and an optional cache-layer. -->
+  &lt;!-- This loads the vsm-box module, a vsm-dictionary that provides terms+identifiers, and an optional cache-layer. --&gt;
   <b>&lt;script src="https://unpkg.com/vsm-box@^1.0.0/dist/vsm-box.standalone.min.js"&gt;&lt;/script&gt;</b>
   <b>&lt;script src="https://unpkg.com/vsm-dictionary-local@^2.6.0/dist/vsm-dictionary-local.min.js"&gt;&lt;/script&gt;</b>
   &lt;script src="https://unpkg.com/vsm-dictionary-cacher@^1.2.0/dist/vsm-dictionary-cacher.min.js"&gt;&lt;/script&gt;
@@ -63,7 +63,7 @@ For example: paste this in a file 'test.html', and open it in your browser:
 
 &lt;body&gt;
 
-  <!-- This places one vsm-box component on the web page. -->
+  &lt;!-- This places one vsm-box component on the web page. --&gt;
   <b>&lt;vsm-box </b>autofocus=true<b>&gt;&lt;/vsm-box&gt;</b>
 
   &lt;br&gt;
@@ -73,8 +73,9 @@ For example: paste this in a file 'test.html', and open it in your browser:
 &lt;script&gt;
   var vsmbox = document.getElementsByTagName('vsm-box')[0];
 
-  // This connects the vsm-box to a vsm-dictionary. Here, we use some local demo dictionary-data.
-  // (Alternative: use a real dictionary interface like <b>vsm-dictionary-bioportal</b>).
+  // This connects the vsm-box to a vsm-dictionary.
+  // Here, we use some local demo dictionary-data.
+  // (Alternative: we could use a real dictionary interface like vsm-dictionary-bioportal).
   <b>vsmbox.vsmDictionary = new</b> (VsmDictionaryCacher(<b>VsmDictionaryLocal</b>)) ({
     dictData: [ { id: 'http://d.org/A',  name: 'Aaa',  entries: [
       { id: 'http://d.org/A/A:01', terms: [{ str: 'aaa' }, { str: 'aab' }] },
@@ -88,7 +89,7 @@ For example: paste this in a file 'test.html', and open it in your browser:
   //  terms: [ { placeholder: 'name' }, { str: 'aaa', classID: 'http://d.org/A/A:01', instID: null }, {} ],
   //  conns: [ { type: 'T', pos: [ 0, 1, 2 ] } ] };
 
-  // This also shows the vsm-box's data content, live in a textfield below it:
+  // This also shows data in the vsm-box, live in a textfield below it:
   var text = document.getElementsByTagName('textarea')[0];  text.value = '';
   function showOutput(e) { text.value = JSON.stringify(e.detail[0], null, 2) }
   vsmbox.addEventListener('change', showOutput);
@@ -100,7 +101,7 @@ For example: paste this in a file 'test.html', and open it in your browser:
 
 
 <p>
-Examples of how to use a vsm-box or read its content.
+Examples of how to use a vsm-box, or read its content.
 Full information is <a href="https://github.com/vsmjs/vsm-box">here</a>.
 </p>
 <br>
