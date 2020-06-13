@@ -98,50 +98,60 @@ For example: paste this in a file called 'test.html', and open it in your browse
 <br>
 
 
-<pre style="font-size: 12px; line-height: 14px;">
+
+<style>
+  pre.code i { font-style: normal; color: #777; }
+  pre.code a { text-decoration: none; color: #00a; }
+</style>
+
+<pre class="code" style="font-size: 12px; line-height: 14px;">
 &lt;!doctype html&gt;
-&lt;html&gt;
-&lt;head&gt;
-  &lt;!-- This loads the vsm-box module, a vsm-dictionary that provides terms+identifiers, and an optional cache-layer. --&gt;
+<a>&lt;html&gt;</a>
+<a>&lt;head&gt;</a>
+  <i>&lt;!-- 1) <u>Load</u> the vsm-box module, and a vsm-dictionary to provide terms+identifiers. --&gt;</i>
   <b>&lt;script src="https://unpkg.com/vsm-box@^1.0.0/dist/vsm-box.standalone.min.js"&gt;&lt;/script&gt;</b>
   <b>&lt;script src="https://unpkg.com/vsm-dictionary-local@^2.6.0/dist/vsm-dictionary-local.min.js"&gt;&lt;/script&gt;</b>
-  &lt;script src="https://unpkg.com/vsm-dictionary-cacher@^1.2.0/dist/vsm-dictionary-cacher.min.js"&gt;&lt;/script&gt;
-&lt;/head&gt;
+<a>&lt;/head&gt;</a>
 
-&lt;body&gt;
 
-  &lt;!-- This places one vsm-box component on the web page. --&gt;
-  <b>&lt;vsm-box </b>autofocus=true<b>&gt;&lt;/vsm-box&gt;</b>
+<a>&lt;body&gt;</a>
+  <i>&lt;!-- 2) <u>Place</u> one 'vsm-box' element on the web page. --&gt;</i>
+  <b>&lt;vsm-box</b> id=vsmbox autofocus=true<b>&gt;&lt;/vsm-box&gt;</b>
 
-  &lt;br&gt;
-  &lt;textarea readonly&gt;&lt;/textarea&gt;
-&lt;/body&gt;
+  <span style=font-size:0px;>&lt;br&gt; </span>&lt;textarea id=textarea readonly rows=31 cols=45&gt;&lt;/textarea&gt;  <i>&lt;!-- FYI: Textfield to show vsm-box data. --&gt;</i>
+<a>&lt;/body&gt;</a>
 
-&lt;script&gt;
-  var vsmbox = document.getElementsByTagName('vsm-box')[0];
 
-  // This connects the vsm-box to a vsm-dictionary.
-  // Here we create some local dictionary-data, as a demo.
-  // (Alternatively, we could use a real dictionary interface like vsm-dictionary-bioportal).
-  <b>vsmbox.vsmDictionary = new</b> (VsmDictionaryCacher(<b>VsmDictionaryLocal</b>)) ({
-    dictData: [ { id: 'http://d.org/A',  name: 'Aaa',  entries: [
-      { id: 'http://d.org/A/A:01', terms: [{ str: 'aaa' }, { str: 'aab' }] },
-      { id: 'http://d.org/A/A:03', terms: [{ str: 'abc' }], descr: 'example' }
-    ]}]
+<a>&lt;script&gt;</a>
+  <i>// 3) <u>Connect</u> the vsm-box to a vsm-dictionary. Here we make one that provides demo-data.</i>
+  <i>//    Or we could use online vocabulary data, like with vsm-dictionary-bioportal etc.</i>
+  <b>vsmbox.vsmDictionary = new VsmDictionary</b>Local({
+    refTerms: ['it'],
+    dictData: [
+      { id: 'http://dem.o/A',  name: 'Demo dictionary A',
+        entries: [
+          { id: 'http://dem.o/A/A:01', terms: [{ str: 'Jo' }, { str: 'Joanna' }] },  <i>// Synonyms.</i>
+          { id: 'http://dem.o/A/A:02', terms: [{ str: 'eats' }], descr: 'an eating activity' }
+        ]
+      }
+    ]
   });
 
 
-  //// If you un-comment this, it will fill the vsm-box with a template structure:
-  //<b>vsmbox.initialValue =</b> {
-  //  terms: [ { placeholder: 'name' }, { str: 'aaa', classID: 'http://d.org/A/A:01', instID: null }, {} ],
-  //  conns: [ { type: 'T', pos: [ 0, 1, 2 ] } ] };
+  <i>// Optional: Fill the vsm-box with a VSM-template.  Uncomment this to do so:</i>
+  <i>/*</i><b>vsmbox.initialValue = </b>{
+    terms: [ { placeholder: 'name' },  { str: 'eats', classID: 'http://dem.o/A/A:02', instID: null },  {} ],
+    conns: [ { type: 'T',  pos: [ 0, 1, 2 ] } ]
+  };<i>*/</i>
 
-  // This also shows the vsm-box's data content live in a textfield below it:
-  var text = document.getElementsByTagName('textarea')[0];  text.value = '';
-  function showOutput(e) { text.value = JSON.stringify(e.detail[0], null, 2) }
-  vsmbox.addEventListener('change', showOutput);
-&lt;/script&gt;
-&lt;/html&gt;</pre>
+
+  <i>// FYI: Show the vsm-box data-content live in the textfield below it.</i>
+  vsmbox.addEventListener('change', showData);
+  <a>function</a> showData(event) {  textarea.value = JSON.stringify(event.detail[0], null, 2)  }
+  showData({ detail: [vsmbox.initialValue || { terms: [], conns: [] }] });
+<a>&lt;/script&gt;</a>
+<a>&lt;/html&gt;</pre></a>
+
 
 
 <br><br>
