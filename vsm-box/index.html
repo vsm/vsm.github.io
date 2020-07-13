@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+
+  <title>vsm-box: 'standalone build' demo</title>
+
+  <style>
+    body { font-family: tahoma, verdana, arial, sans-serif;  margin: 0; }
+    #intro { font-size: 12px;  color: #aaa;  margin: 10px 0 20px 0; }
+    #main { padding: 30px 0 18px 50px;  background-color: #fff;  min-height: 180px; }
+    #msg { color: #aaa;  font-size: 11px; height: 12px;  margin: 8px 0 2px 0; text-align: right; }
+    #stateText { outline: none;  font-size: 11px;  white-space: pre;  box-sizing: border-box;
+      display: block;  border: 0.5px solid #b8b8b8; }
+    #info { padding-left: 10px; }
+    #info, #info a, #info a:visited { font-size: 12px;  color: #888; }
+    #info a:hover { color: #88f; }
+  </style>
+
+  <!-- Include a vsm-dictionary, and a cacher for speed. -->
+  <script src="https://unpkg.com/vsm-dictionary-local@^2.6.0/dist/vsm-dictionary-local.min.js"></script>
+  <script src="https://unpkg.com/vsm-dictionary-cacher@^1.2.0/dist/vsm-dictionary-cacher.min.js"></script>
+
+  <!-- No Vue etc libraries needed. These are bundled with 'vsm-box.standalone'. -->
+
+  <!-- Include the 'standalone build' version of 'vsm-box'. -->
+  <script src="https://unpkg.com/vsm-box@^1.0.0/dist/vsm-box.standalone.min.js"></script>
+
+  <!-- Include a library for showing VSM JS-objects in a readable way, as JSON5. -->
+  <script src="https://unpkg.com/vsm-json-pretty@^1.0.0/dist/vsm-json-pretty.min.js"></script>
+
+  <!-- Include a library for converting JSON5 back to a JS-object. -->
+  <script src="https://unpkg.com/json5@^2.1.0/dist/index.min.js"></script>
+</head>
+
+
+<body>
+
+  <div id="main">
+    <vsm-box id="vsmBox"></vsm-box>
+
+    <div id="msg"></div>
+    <textarea id="stateText" rows="31" cols="80" spellcheck="false"></textarea>
+
+    <button id="buttonClear">Clear</button>
+    <button id="buttonExample1">Example 1</button>
+    <button id="buttonExample2">Example 2</button>
+    <span id="info">
+      Info: <a href="https://vsmjs.github.io/">vsmjs.github.io</a>,&nbsp;
+      <a href="https://github.com/vsmjs/vsm-box">vsm-box</a>,&nbsp;
+      <a href="http://scicura.org/vsm/vsm.html">VSM</a>,&nbsp;
+      <a href="http://scicura.org/vsm/examples.html">examples</a>.
+    </span>
+    </div>
+  </div>
+
+
+  <!-- Here one can override vsm-box & vsm-autocomplete's default CSS-styles --
+  <style> .vsm-box .vsm-autocomplete .item-type-literal { color: #55a; }
+  </style> <!-- -->
+
+
+  <script>
+
+  // (--- See also 'index-prod-slim.html' ---).
+  var demoData = createData();
+  var options = Object.assign(
+    demoData,
+    { delay: [20, 350] }  // Realistic delay. VsmDict-Cacher speeds it up again.
+  );
+  var dict = new (VsmDictionaryCacher(VsmDictionaryLocal)) (options);
+
+
+  var elBox = document.getElementById('vsmBox');
+  var elMsg = document.getElementById('msg');
+  var elTxt = document.getElementById('stateText');
+
+  var lastAutoFilledText = '';
+
+  var initialValue = { terms: [], conns: [] };
+
+
+  /* Set props and an event listener on the vsm-box webcomponent.
+     + Note: 'vsm-box' is not inside a Vue-activated '#app'-element here,
+       so we can not use `v-bind:...` to sync variables to it.
+       To set props here, we must assign Strings and Objects to the element's
+       attributes.  - Note that assigning e.g. a Boolean `true` would not work,
+       so we'd need to use the String `'true'` */
+  elBox.vsmDictionary = dict;
+  elBox.queryOptions = {};
+  elBox.autofocus    = 'false';
+  elBox.placeholder  = 'Type a term or doubleclick for menu';
+  elBox.cycleOnTab   = 'true';
+  elBox.initialValue = initialValue;  // We must assign either Objects..
+  elBox.freshListDelay = '0';         // ..or Strings, to the attributes.
+  elBox.allowClassNull = 'true';
+  elBox.sizes = { minWidth: 240 };
+
+  /* Although one can set a Function on the `customTerm` prop, it appears that
+     then it does not accept a `false` anymore, even when given as a String.
+     Therefore we can only disable it with a default-returning Function
+     (see below), (or by not setting `elBox.customTerm` in the first place). */
+  var useCustomTerm = false;  // Set this to `true` to activate it.
+  if (useCustomTerm) {
+    setCustomTerm(true);  setTimeout(() => setCustomTerm(false), 5000);
+  }
+  function setCustomTerm(bool) {
+    elBox.customTerm = !bool ?
+      function(o) { return { str: o.strs.str } } :
+      function(o) { return { str: '<span style="font-size: 8px; color: #777;">' +
+        o.index + '.&nbsp; </span>' + o.strs.str } };
+  }
+
+  elBox.addEventListener('change', onChange);
+
+
+  // Initialize the 'stateText' textarea-element.
+  boxValueToStateText(initialValue);             // Initial VsmBox ==> textarea.
+  elTxt.addEventListener('input', stateTextToBoxValue); // If textarea changes..
+                                                        // .. ==> change VsmBox.
+  elTxt.addEventListener('keydown', ev => {  // Disable Tab, a common edit-key..
+    if (ev.key == 'Tab')  ev.preventDefault();  // which 'd go to Clear button.
+  });
+
+
+  // Initialize the 'msg' element.
+  elMsg.style.width = getComputedStyle(elTxt).width;
+  setMsg('');
+
+
+
+  function onChange(event) {              // VsmBox changes ==> change textarea.
+    // Note: we must access `$emit()`'s args via `events.detail[]`. This is
+    // different for a webpacked webcomponent vs. a pure Vue-component.
+    boxValueToStateText(event.detail[0]);
+  }
+
+
+  function boxValueToStateText(value) {         // (See vsm-box's index-dev.js).
+    elTxt.value = lastAutoFilledText = VsmJsonPretty(value, { json5: true });
+    setMsg(1);
+  }
+
+
+  function stateTextToBoxValue() {              // (See vsm-box's index-dev.js).
+    var abort = lastAutoFilledText === elTxt.value;
+    lastAutoFilledText = false;
+    if (abort)  return;
+
+    try {
+      elBox.initialValue = JSON5.parse(elTxt.value);
+      setMsg(-1);
+    }
+    catch (err) {
+      setMsg(err.toString().replace('JSON5: ', ''));
+    }
+  }
+
+
+  function setMsg(msg) {
+    var d = new Date();
+    d = '[' + ('0' + d.getHours()).slice(-2) + ':' +
+      ('0' + d.getMinutes()).slice(-2) + ':' +
+      ('0' + d.getSeconds()).slice(-2) + '.' +
+      ('00' + d.getMilliseconds()).slice(-3, -1) + ']';
+    elMsg.innerHTML = !msg ? '' :
+      ((msg == -1 ? '<---' : msg == 1 ? '--->' : msg) + ' &nbsp;' + d);
+  }
+
+
+  document.getElementById('buttonClear').onclick = function() {
+    fillBoth('Cleared', { terms: [], conns: [] })
+  }
+
+
+  document.getElementById('buttonExample1').onclick = function() {
+    fillBoth('Example 1', {
+      terms: [
+        { str: 'John',    classID: 'PRS:0010', instID: null },
+        { str: 'eats',    classID: 'CW:0101',  instID: null },
+        { str: 'chicken', classID: 'BIO:0042', instID: null,
+          dictID: 'http://x.org/BIO',  descr: 'the animal',
+          queryOptions: { sort: { dictID: ['http://x.org/BIO'] } } },
+        { str: 'with',    classID: 'CW:0105',  instID: null,
+          dictID: 'CW',  descr: 'using' },
+        { str: 'fork',    classID: 'CW:0108',  instID: null,
+          queryOptions: { fixedTerms: [ { id: 'CW:0107', str: 'spoon' } ] } }
+      ],
+      conns: [
+        { type: 'T', pos: [0, 1, 2] },
+        { type: 'T', pos: [1, 3, 4] }
+      ]
+    });
+  }
+
+
+  document.getElementById('buttonExample2').onclick = function() {
+    fillBoth('Example 2', {
+      terms: [
+        { str: 'John',      classID: 'PRS:0010', instID: 'db-id20',
+          dictID: 'PRSNS',  descr: 'an example John',
+          minWidth: 5, maxWidth: 80, editWidth: 50,
+          queryOptions: {
+            filter: { dictID: [ 'PRSNS', 'CW', 'VAR' ] },
+            sort: { dictID: [ 'CW' ] },
+            fixedTerms: [
+              { id: 'PRS:0001', str: 'Alice' }, { id: 'BIO:0010' }  ] }
+        },
+        { str: 'activates', classID: 'BIO:0014', instID: null,
+          isFocal: true },
+        { str: 'spicy',     classID: 'CW:0215',  instID: null },
+        { str: 'chicken',   classID: 'BIO:0042', instID: null,
+          dictID: 'http://x.org/BIO',  descr: 'the animal',
+          queryOptions: { sort: { dictID: ['http://x.org/BIO'] } } },
+        { str: 'with',      classID: 'CW:0105',  instID: null,
+          dictID: 'CW',  descr: 'using' },
+        { str: 'Ca2+', style: 'u2-4', descr: 'Calcium ion',
+          classID: 'BIO:0010', instID: null },  ///, minWidth: 47},
+        { str: 'with',      classID: 'CW:0106',  instID: null,
+          dictID: 'CW',  descr: 'accompanied by' },
+        { str: 'cls', classID: 'A:01', dictID: 'A', descr: 'descr-1' },
+        { str: 'lit' },
+        { editWidth: 20, placeholder: 'pl' },
+        { type: 'EC', editWidth: 20 },
+        { type: 'EL', editWidth: 20 },
+        { str: 'and',       classID: 'CW:0005',  instID: null,
+          dictID: 'CW',  descr: 'a set of items' },
+        { str: 'himself',   classID: 'PRS:0010', instID: 'db-id40',
+          parentID: 'db-id20'}
+      ],
+      conns: [
+        { type: 'T', pos: [ 3, -1, 2 ] },
+        { type: 'T', pos: [ 0, 1, 3 ] },
+        { type: 'T', pos: [ 1, 4, 5 ] },
+        { type: 'L', pos: [ 12, 7, 8, 9, 10, 11, 13 ] },
+        { type: 'T', pos: [ 1, 6, 12 ] },
+        { type: 'R', pos: [ 13, 0 ] }
+      ]
+    });
+  }
+
+
+  function fillBoth(name, data) {
+    elBox.initialValue = JSON.parse(JSON.stringify(data));  // Clone=>new Object.
+    boxValueToStateText(data);
+    setMsg(name);
+  }
+
+
+
+  // ---------- DEMO-DATA ----------
+  function createData() {
+    return {
+      dictData: [
+        { id: 'CW',  abbrev: 'CW',  name: 'Common words',  entries: [
+          { id: 'CW:0045', terms: [{str: 'about'}] },
+          { id: 'CW:0082', terms: [{str: 'after'}] },
+          { id: 'CW:0036', terms: [{str: 'all'}] },
+          { id: 'CW:0080', terms: [{str: 'also'}] },
+          { id: 'CW:0095', terms: [{str: 'any'}] },
+          { id: 'CW:0017', terms: [{str: 'as'}] },
+          { id: 'CW:0081', terms: [{str: 'back'}] },
+          { id: 'CW:0094', terms: [{str: 'because'}] },
+          { id: 'CW:0024', terms: [{str: 'by'}] },
+          { id: 'CW:0053', terms: [{str: 'can'}] },
+          { id: 'CW:0076', terms: [{str: 'come'}] },
+          { id: 'CW:0067', terms: [{str: 'could'}] },
+          { id: 'CW:0098', terms: [{str: 'day'}] },
+          { id: 'CW:0019', terms: [{str: 'do'}] },
+          { id: 'CW:0088', terms: [{str: 'first'}] },
+          { id: 'CW:0025', terms: [{str: 'from'}] },
+          { id: 'CW:0047', terms: [{str: 'get'}] },
+          { id: 'CW:0097', terms: [{str: 'give'}] },
+          { id: 'CW:0049', terms: [{str: 'go'}] },
+          { id: 'CW:0065', terms: [{str: 'good'}] },
+          { id: 'CW:0009', terms: [{str: 'have'}] },
+          { id: 'CW:0062', terms: [{str: 'into'}] },
+          { id: 'CW:0057', terms: [{str: 'just'}] },
+          { id: 'CW:0059', terms: [{str: 'know'}] },
+          { id: 'CW:0054', terms: [{str: 'like'}] },
+          { id: 'CW:0074', terms: [{str: 'look'}] },
+          { id: 'CW:0052', terms: [{str: 'make'}] },
+          { id: 'CW:0099', terms: [{str: 'most'}] },
+          { id: 'CW:0092', terms: [{str: 'new'}] },
+          { id: 'CW:0056', terms: [{str: 'no'}] },
+          { id: 'CW:0013', terms: [{str: 'not'}] },
+          { id: 'CW:0073', terms: [{str: 'now'}] },
+          { id: 'CW:0014', terms: [{str: 'on'}] },
+          { id: 'CW:0035', terms: [{str: 'one'}] },
+          { id: 'CW:0075', terms: [{str: 'only'}] },
+          { id: 'CW:0031', terms: [{str: 'or'}] },
+          { id: 'CW:0078', terms: [{str: 'over'}] },
+          { id: 'CW:0061', terms: [{str: 'person'}] },
+          { id: 'CW:0066', terms: [{str: 'some'}] },
+          { id: 'CW:0060', terms: [{str: 'take'}] },
+          { id: 'CW:0079', terms: [{str: 'think'}] },
+          { id: 'CW:0055', terms: [{str: 'time'}] },
+          { id: 'CW:0084', terms: [{str: 'two'}] },
+          { id: 'CW:0042', terms: [{str: 'up'}] },
+          { id: 'CW:0093', terms: [{str: 'want'}] },
+          { id: 'CW:0090', terms: [{str: 'way'}] },
+          { id: 'CW:0087', terms: [{str: 'work'}] },
+          { id: 'CW:0063', terms: [{str: 'year'}, {str: 'years'}] },
+          { id: 'CW:0101', descr: 'to eat',
+            terms: [
+              {str: 'eat'}, {str: 'eats'}, {str: 'eating'}, {str: 'to eat'}
+            ]
+          },
+          { id: 'CW:0069',  descr: 'to see',
+            terms: [{str: 'see'}, {str: 'sees'}, {str: 'to see'}] },
+          { id: 'CW:0028',  descr: 'to say',
+            terms: [{str: 'say'}, {str: 'says'}, {str: 'to say'}] },
+          { id: 'CW:0107', terms: [{str: 'spoon'}] },
+          { id: 'CW:0108', terms: [{str: 'fork'}] },
+          { id: 'CW:0109', terms: [{str: 'knife'}] },
+          { id: 'CW:0214', terms: [{str: 'burnt'}] },
+          { id: 'CW:0215', terms: [{str: 'spicy'}] },
+          { id: 'CW:0105', descr: 'to use', terms: [
+            {str: 'with', descr: 'using'},
+            {str: 'use'},
+            {str: 'uses'},
+            {str: 'using'},
+            {str: 'use of'},
+            {str: 'to use'}
+          ]},
+          { id: 'CW:0106', descr: 'to be accompanied by', terms: [
+            {str: 'with', descr: 'accompanied by'},
+            {str: 'accompanied by'},
+            {str: 'is accompanied by'}
+          ]},
+          { id: 'CW:0020', descr: 'associated with', terms: [{str: 'at'}] },
+          { id: 'CW:0007', descr: 'to be located in', terms: [
+            {str: 'in', style: ''}, {str: 'is located in'}, {str: 'located in'},
+            {str: 'located at'}, {str: 'at'} ]
+            ///, {str: 'locatedness-inside', style: 'i'}
+          },
+          { id: 'CW:0115', descr: 'to happen in time period',
+            terms: [{str: 'in'}, {str: 'during'}] },
+          { id: 'CW:0116', descr: 'to happen at timepoint',
+            terms: [{str: 'at', descr: 'happens at timepoint'}] },
+          { id: 'CW:0111', descr: 'to pertain to',
+            terms: [{str: 'in', descr: 'pertains to'}] },
+          { id: 'CW:0005', descr: 'a set of items',
+            terms: [{str: 'and'}]
+          },
+          { id: 'CW:0112', descr: 'a list where item order is important',
+            terms: [{str: 'ordered-and', style: 'i0-8'}] },
+          { id: 'CW:0002', descr: 'to be',
+            terms: [
+              {str: 'to be'},
+              {str: 'being'},
+              {str: 'is', descr: 'to be, in 3rd-person form'},
+              {str: 'are', descr: 'to be, in plural form'}
+            ]
+          },
+          { id: 'CW:0123', descr: 'belonging to', terms: [{str: 'of'}, {str: '\'s'}] },
+          { id: 'CW:0003', descr: 'having purpose', terms: [{str: 'to'}, {str: 'for'}] },
+          { id: 'CW:0126', terms: [{str: 'book'}] },
+          { id: 'CW:0131',
+            descr: 'Single-term relation concept, for the \'if ... then ...\' ' +
+              'construct used in natural language',
+            terms: [{str: 'if-then'}]
+          },
+          { id: 'CW:0132',
+            descr: '= \'if not {subject} then {object}\'',
+            terms: [{str: 'else'}]
+          },
+          { id: 'CW:0133', terms: [{str: 'has'}] },
+          { id: 'CW:0141', descr: 'being located amongst',
+            terms: [{str: 'between'}, {str: 'is between'}, {str: 'are between'}] },
+
+        ]},
+
+        { id: 'PRSNS', abbrev: 'PRS', name: 'Persons', entries: [
+          { id: 'PRS:0001', terms: [{str: 'Alice'}] },
+          { id: 'PRS:0002', terms: [{str: 'Bob'}] },
+          { id: 'PRS:0003', terms: [{str: 'Clara'}] },
+          { id: 'PRS:0004', terms: [{str: 'David'}] },
+          { id: 'PRS:0005', terms: [{str: 'Eve'}] },
+          { id: 'PRS:0006', terms: [{str: 'Frank'}] },
+          { id: 'PRS:0007', terms: [{str: 'Greta'}] },
+          { id: 'PRS:0008', terms: [{str: 'Heidi'}] },
+          { id: 'PRS:0009', terms: [{str: 'Jane'}] },
+          { id: 'PRS:0010', terms: [{str: 'John'}],
+            descr: 'example John' },
+          { id: 'PRS:0011', terms: [{str: 'Joy'}] },
+          { id: 'PRS:0012', terms: [{str: 'Robert'}] },
+          { id: 'PRS:0013', terms: [{str: 'Robin'}] },
+          { id: 'PRS:0014', terms: [{str: 'Taylor'}] },
+          { id: 'PRS:0015', terms: [{str: 'Tom'}] },
+          { id: 'PRS:0016', terms: [{str: 'Wally'}] },
+          { id: 'PRS:0017', terms: [{str: 'Walter'}] },
+          { id: 'PRS:0018', terms: [{str: 'Will'}] },
+          { id: 'PRS:0019', terms: [{str: 'William'}] },
+          { id: 'PRS:0020', terms: [{str: 'Wilson'}] },
+          { id: 'PRS:0021', descr: 'Steven Vercruysse, creator of VSM',
+            terms: [{str: 'Steven'}] },
+        ]},
+
+        { id: 'http://x.org/BIO', name: 'Biological concepts', entries: [
+          { id:'BIO:0010', terms: [{str: 'Ca2+', style: 'u2-4'}] },
+          { id:'BIO:0011', terms: [{str: 'Na+Cl-', style: 'u2;u5'}], descr: 'dissolved salt' },
+          { id:'BIO:0001', terms: [{str: 'beta-Carotene'}, {str: 'β-Carotene'}] },
+          { id:'BIO:0002', descr: 'the Human gene ICER', terms: [{str: 'ICER'}] },
+          { id:'BIO:0003', descr: 'the Human gene cdc2',
+            terms: [{str: 'cdc2', style: 'i'}],  ///, {str: 'cdc'}, {str: 'KRP5'},
+            z: {species: 'Human'}
+          },
+          { id:'BIO:0903', descr: 'the Mouse gene cdc2', terms: [{str: 'cdc2'}] },
+          { id:'BIO:0014',
+            descr: 'to activate (=activation of) a biomolecule',
+            terms: [
+              {str: 'activates'},
+              {str: 'activation'},
+              {str: 'activation (of)', style: 'i11-15'}
+            ],
+          },
+          { id:'BIO:0015', terms: [{str: 'inhibits'}] },
+          { id:'BIO:0016', terms: [{str: 'regulates'}, {str: 'regulation'}] },
+          { id:'BIO:0017', terms: [{str: 'has function'}] },
+          { id:'BIO:0018', terms: [{str: 'according to'}] },
+          { id:'BIO:0019', terms: [
+            {str: 'binds to'},
+            {str: 'binds'},
+            {str: 'bind'},
+            {str: 'bound to'}
+          ]},
+          { id:'BIO:0030',
+            descr: 'addition of a ubiquitin-molecule tag to a protein, ' +
+              'which marks it for degradation by a proteasome',
+            terms: [{str: 'ubiquitinates'}]
+          },
+          { id:'BIO:0042', descr: 'the animal',         terms: [{str: 'chicken'}] },
+          { id:'BIO:0101', descr: 'example molecule A', terms: [{str: 'A'}] },
+          { id:'BIO:0102', descr: 'example molecule B', terms: [{str: 'B'}] },
+          { id:'BIO:0103', descr: 'example molecule C', terms: [{str: 'C'}] },
+          { id:'BIO:0104', descr: 'example molecule D', terms: [{str: 'D'}] },
+          { id:'BIO:0124', descr: 'example molecule X', terms: [{str: 'X'}] },
+          { id:'BIO:0131', descr: 'example protein A',  terms: [{str: 'protein A'}] },
+          { id:'BIO:0132', descr: 'example protein B',  terms: [{str: 'protein B'}] },
+          { id:'BIO:0133', descr: 'example location C', terms: [{str: 'location C'}] },
+          { id:'BIO:0151', descr: 'the blade of a plant leaf (Plant Ontology term)',
+            terms: [{str: 'leaf lamina'}] },
+          { id:'BIO:0152', descr: 'a plant leaf shape variation (PATO term)',
+            terms: [{str: 'twisted'}] },
+        ]},
+
+        { id: 'VAR', abbrev: 'VAR', name: 'Various concepts',
+          entries: [
+            { id: 'VAR:0103', descr: 'someone with little courage',
+              terms: [
+                {str: 'coward'},
+                {str: 'chicken', style: 'i', descr: '\'coward\''}
+              ]
+            },
+            { id: 'VAR:0015', descr: 'Computer science, Information Technology',
+              terms: [{str: 'IT'}] },
+            { id: 'VAR:0016', descr: 'to turn on a device',
+              terms: [{str: 'activate'}, {str: 'activates'}],
+              z: { extraChar: '⍾' }
+            },
+            { id: 'VAR:0017', terms: [{str: 'device'}] },
+            { id: 'VAR:0018', descr: 'is subclass of',
+              terms: [{str: 'is subclass of'}, {str: 'is a'}] },
+            { id: 'VAR:0021', descr: 'percent',
+              terms: [{str: 'percent'}, {str: '%'}, {str: 'percentage'}] },
+            { id: 'VAR:0093', descr: 'unit of acceleration',
+              terms: [{str: 'm/s2', style: 'u3'}] },
+            { id: 'VAR:0151', descr: 'the mathematical operator \'for all\'',
+              terms: [{str: '∀'}, {str: 'for all'}] },
+            { id: 'VAR:0153', descr: 'the mathematical operator \'there exists\'',
+              terms: [{str: '∃'}, {str: 'exists'}] },
+            { id: 'VAR:0011',
+              terms: [
+                {str: 'HCO3- ⇌ CO32- + H+', style: 's3;u4;s10;u11-13;u17'}
+              ],
+              descr: 'step 2 of carbonic acid ionization reaction'
+            },
+            { id: 'VAR:0255',
+              descr: 'Visual Syntax Method, a way to represent ' +
+                'contextualised information, so it is manageable by ' +
+                'both humans and computers',
+              terms: [{str: 'VSM'}]
+            },
+          ]
+        },
+
+        { id: '00', name: 'Numbers', entries: [
+          { id: '00:5e+0',   terms: [{str:  '5'}, {str: 'five'}] },
+          { id: '00:1.2e+1', terms: [{str: '12'}, {str: 'twelve'}, {str: 'dozen'}],
+            descr: 'the amount of twelve' },
+          { id: '00:4e+1',   terms: [{str: '40'}, {str: 'forty'}] },
+        ]},
+
+        { id: 'NEW', name: 'New Concepts', entries: [] },
+      ],
+
+      refTerms: [
+        'it', 'this', 'that', 'they', 'these', 'them'
+      ]
+    };
+  }
+
+  </script>
+
+</body>
+</html>
