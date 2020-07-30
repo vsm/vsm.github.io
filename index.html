@@ -2,64 +2,364 @@
 <html>
 <head>
 <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 <style>
-body {
-  margin: 40px 0 0 100px;
-  font-family: 'Roboto', Arial, Helvetica, Tahoma, Calibri, Verdana, sans-serif;
-  font-size: 17px;
-  line-height: 26px;
-  height: 26px;
-}
-h1 {
-  margin-bottom: 32px;
-}
-.div600 {
-  width: 600px;
-}
+  body {
+    margin: 40px 0 0 0;
+    font-family: 'Roboto', Arial, Helvetica, Tahoma, Calibri, Verdana, sans-serif;
+    font-size: 14.5px;
+    line-height: 24.5px;
+    height: 26px;
+  }
+  a, a:hover, a:visited {
+    color: #00a;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  .fa.small {
+    font-size: smaller;
+  }
+  body > div:not(.div-intro) {
+    margin-left: 9%;
+  }
+  .div-intro {
+    width: 532px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .div600 {
+    width: 600px;
+  }
+  h1 {
+    font-size: 30px;
+    margin-bottom: 32px;
+  }
+  .h1-sub {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 36px;
+  }
+  .h1-subsub {
+    margin-bottom: 0.92em;
+  }
+  ul {
+    margin-left: 1.1em;
+    padding: 0;
+  }
+  li {
+    padding: .05em 0 0.03em;
+  }
+  ul ul {
+    padding: 0.2em 0 1.2em;
+  }
+  ul ul ul {
+    padding-bottom: 0;
+  }
+  li span.info {
+    font-size: smaller;
+    margin-left: 0.3em;
+  }
+  .demo-note {
+    font-size: smaller;
+  }
+  .li-footer {
+    font-size: 12.5px;
+    margin: -0.03em 0 0.1em 0.95em;
+    padding: 0 0 0 0.6em;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    width    : 480px;
+    min-width: 480px;
+    max-width: 480px;
+  }
+  .li-footer.paper {
+    color: #555;
+    background-color: #f5f5f5
+  }
+  .li-footer.paper a {
+    color: #35a;
+  }
+  .li-footer.modules {
+    border: 1px solid #f4f4f4;
+  }
+  .li-footer span:not(:last-child)::after {
+    content: " | ";
+    padding: 0 0.85% 0 1.15%;
+  }
+  /*.li-footer span::before {
+    content: "▪";
+    padding-right: 1%;
+  }
+  .li-footer span:not(:first-child)::before {
+    padding-left: 0.55%;
+  }*/
+  .paper-abstract {
+    display: none;
+  }
+  /*
+  br.strut {
+    display: block;
+    font-size: 0;
+    line-height: 0;
+  }
+  br.strut.line {
+    margin-bottom: 12px;
+  }
+  br.strut.bit {
+    margin-bottom: 3px;
+  }
+  */
 </style>
 </head>
 <body>
 
-<div class="div600">
+<div class="div-intro">
 
 <h1>vsmjs</h1>
 
-<p style="margin-bottom: 32px">
-<b>Translating any knowledge into a computable form, made easy.</b>
-</p>
+<div class="h1-sub">
+Translating any knowledge into a computable form, made easy.
+</div>
 
-<p>
-
-Here we combine or link all information about VSM and supporting software:
-</p>
-<p>
-• <b>VSM</b>: see the extensive <a href="vsm-pages">VSM-pages</a>.
-<br>• <b>Code</b>: see Readmes of repositories in the <a href="https://github.com/vsmjs">vsmjs</a> organization.
-<br>• <i>or see brief info below.</i>
-<br>• <b>Central repository</b>: is the <a href="https://github.com/vsmjs/vsm-box">vsm-box</a>
-user-interface (as a web-page element),
-<br>• <b>Live demo of vsm-box</b>: try it <a href="vsm-box/index.html">here</a>. It is the smaller rectangle on top.
-</p>
-
-<p style="margin-bottom: 34px"></p>
-<p style="background-color:#fafafa; border: 1px solid #ddd; border-radius: 10px; margin: -8px -10px; padding: 8px 10px">
-<b>Update:</b>
-<br style="margin-bottom: 8px">
-The first official paper fully describing VSM will soon be published in preprint.
-After that, VSM applications and related projects
-<a href="https://mi2cast.github.io/causalBuilder/">will</a> <a href="https://github.com/UniBioDicts">follow</a>
-<a href="https://github.com/vsmjs/vsm-box">too</a>.
-<br style="margin-bottom: 20px">
-<b>Request:</b>
-<br style="margin-bottom: 0px">
-I have no salary. Please support me on <a href="https://github.com/sponsors/stcruy">GitHub Sponsors</a>,
-<a href="https://patreon.com/stevencruy">Patreon</a>, or <a href="https://paypal.me/stcruy">Paypal</a>.
-</p>
-<p style="margin-bottom: 8px"></p>
-
-<br><hr><br>
+<div class="h1-subsub">
+Here we collect all information on VSM:
+</div>
 
 
+<ul style="margin-top: 0">
+<li>
+  <b>Intros</b>:
+  <ul>
+  <li>
+    ‘<a href="https://vsmjs.github.io/vsm-pages/intro"
+    >How to easily plant complex ideas into computers</a>’
+    <span class="info">(blog, 2018)</span>
+  <li>
+    ‘<a href="https://www.ntnutechzone.no/en/2019/06/a-bold-vision-for-computable-scientific-knowledge"
+    >A bold vision for computable scientific knowledge</a>’
+    <span class="info">(blog, 2019)</span>
+  </ul>
+
+<li>
+  <b>How VSM works</b>:
+  <ul>
+  <li>
+    <b>‘<a href="https://www.preprints.org/manuscript/202007.0486"
+    target=_blank><u>Intuitive Representation of Computable Knowledge</u></a>’</b>
+    <span class="info">(Preprint paper, 2020)</span>
+    <div class="li-footer paper">
+      Paper :
+      <span>
+        <!--todo
+        <a href="javascript:void(0);" onclick="show_hide_abstract(this, 'vsm-paper')">Show abstract</a></span>
+        -->
+        <a href="https://www.preprints.org/manuscript/202007.0486">Abstract</a></span>
+      <span>
+        <a href="https://www.preprints.org/manuscript/202007.0486/v2/download">Main PDF</a></span>
+      <span>
+        Full detail: <a href="https://www.preprints.org/manuscript/202007.0486/v2/download/supplementary">Supplementary PDF</a></span>
+      <span>
+        Share:&nbsp;
+        <a target="_blank" href="mailto:?subject=From%20Preprints:%20Intuitive%20Representation%20of%20Computable%20Knowledge&amp;body=https://www.preprints.org/manuscript/202007.0486/v2%20%0D%0A%0D%0AFrom%20Preprints:%20Intuitive%20Representation%20of%20Computable%20Knowledge:%0D%0A%0D%0AScientific%20progress%20is%20increasingly%20dependent%20on%20knowledge%20in%20computation-ready%20forms.%20In%20the%20life%20sciences%2C%20among%20others%2C%20many%20scientists%20therefore%20extract%20and%20structure%20knowledge%20from%20the%20literature.%20In%20a%20process%20called%20manual%20curation%2C%20they%20enter%20knowledge%20into%20spreadsheets%2C%20or%20into%20databases%20where%20it%20serves%20their%20and%20many%20others%27%20research.%20Valuable%20as%20these%20curation%20efforts%20are%2C%20the%20range%20and%20detail%20of%20what%20can%20practically%20be%20captured%20and%20shared%20remains%20limited%2C%20because%20of%20the%20constraints%20of%20current%20curation%20tools.%20Many%20important%20contextual%20aspects%20of%20observations%20described%20in%20literature%20simply%20do%20not%20fit%20in%20the%20form%20defined%20by%20these%20tools%2C%20and%20thus%20cannot%20be%20captured.%20Here%20we%20present%20the%20design%20of%20an%20easy-to-use%2C%20general-purpose%20method%20and%20interface%2C%20that%20enables%20the%20precise%20semantic%20capture%20of%20virtually%20unlimited%20types%20of%20information%20and%20details%2C%20using%20only%20a%20minimal%20set%20of%20building%20blocks.%20Scientists%20from%20any%20discipline%20can%20use%20this%20to%20convert%20any%20complex%20knowledge%20into%20a%20form%20that%20is%20easily%20readable%20and%20meaningful%20for%20both%20humans%20and%20computers.%20The%20method%20VSM%20forms%20a%20universal%20and%20high-level%20language%20for%20encoding%20ideas%2C%20and%20for%20interacting%20with%20digital%20knowledge.">
+        <i class="small fa fa-envelope" style="font-size: smaller;"></i></a>
+        <a target="_blank" href="https://twitter.com/intent/tweet?text=Intuitive+Representation+of+Computable+Knowledge+@Preprints_org&amp;url=https://Fwww.preprints.org/manuscript/202007.0486/v2">
+        <i class="small social fa fa-twitter"></i></a>
+        <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://www.preprints.org/manuscript/202007.0486/v2&amp;title=Intuitive+Representation+of+Computable+Knowledge&amp;summary=Scientific+progress+is+increasingly+dependent+on+knowledge+in+computation-ready+forms.+In+the+life+sciences%2C+among+others%2C+many+scientists+therefore+extract+and+structure+knowledge+from+the+literature.+In+a+process+called+manual+curation%2C+they+enter++%5B...%5D&amp;source=https://www.preprints.org">
+        <i class="small social fa fa-linkedin"></i></a>
+        <a target="_blank" href="https://www.facebook.com/sharer.php?u=https://www.preprints.org/manuscript/202007.0486/v2">
+        <i class="small social fa fa-facebook"></i></a>
+      </span>
+      <span>
+        <a href="https://www.preprints.org/manuscript/202007.0486">Cite</a>
+    </div>
+    <div class="paper-abstract" id="abstract-vsm-paper">
+      Scientific progress is increasingly dependent on knowledge in computation-ready
+      forms. In the life sciences, among others, many scientists therefore extract and
+      structure knowledge from the literature. In a process called manual curation,
+      they enter knowledge into spreadsheets, or into databases where it serves their
+      and many others' research. Valuable as these curation efforts are, the range and
+      detail of what can practically be captured and shared remains limited, because
+      of the constraints of current curation tools. Many important contextual aspects
+      of observations described in literature simply do not fit in the form defined by
+      these tools, and thus cannot be captured. Here we present the design of an easy-
+      to-use, general-purpose method and interface, that enables the precise semantic
+      capture of virtually unlimited types of information and details, using only a
+      minimal set of building blocks. Scientists from any discipline can use this to
+      convert any complex knowledge into a form that is easily readable and meaningful
+      for both humans and computers. The method VSM forms a universal and high-level
+      language for encoding ideas, and for interacting with digital knowledge.
+    </div>
+  <li>
+    Many explained <a href="https://vsmjs.github.io/vsm-pages/examples">VSM examples</a>
+    <span class="info">(using an earlier vsm-box prototype)</span>
+  <!--
+  <li>
+    <span class="info">
+      (earlier versions on the VSM-pages:
+      <a href="https://vsmjs.github.io/vsm-pages/vsm">how VSM works</a>,
+      <a href="https://vsmjs.github.io/vsm-pages/summary">summary</a>,
+      <a href="https://vsmjs.github.io/vsm-pages/discussion">discussion</a>)
+    </span>
+  -->
+  <li>
+    <span class="demo-note"><a href="#vsm-intro-interface"
+    >animated demo/intro</a>, see below</span>
+  </ul>
+
+<li>
+  <b>Code</b>:
+  <ul>
+  <li>
+    <b><a href="https://github.com/vsmjs/vsm-box"><u>vsm-box</u></a>&nbsp;</b>:
+    the user interface of VSM
+    <span class="info">(as a &lt;vsm-box&gt; HTML-element)</span>
+    <span class="info">(GitHub)</span>
+    <!-- <span class="info">(open-source)</span> -->
+    <div class="li-footer paper">
+      <span>
+        Paper :&nbsp;
+        <a href="https://www.preprints.org/manuscript/202007.0557">preprint</a></span>
+      <span>
+        <a href="https://www.preprints.org/manuscript/202007.0557/v1/download">PDF</a></span>
+      <span>
+        Share:&nbsp;
+        <a target="_blank" href="mailto:?subject=From Preprints: VSM-box: General-purpose Interface for Biocuration and Knowledge Representation&body=https://www.preprints.org/manuscript/202007.0557/v1 %0D%0A%0D%0AFrom Preprints: VSM-box: General-purpose Interface for Biocuration and Knowledge Representation:%0D%0A%0D%0AVSM is a recently introduced method for entering and displaying any type of knowledge, in a form that is both semantically precise for computation and intuitive for human understanding. VSM is the combination of a new semantic model, and the design for a dedicated user interface to support it. Here we present the implementation of this user interface, as a sophisticated HTML-element, &lt;vsm-box&gt;, that can be embedded in any web-based curation app. We show how developers can use it for biocuration projects, customize it to particular end-user needs, and contribute to its growth. Vsm-box is open-source at https://github.com/vsmjs/vsm-box under the AGPL license, as a JavaScript (ES6) Vue.js web-component that runs in all modern web browsers. It is the capstone of the Vsmjs organization at https://github.com/vsmjs that groups its supporting modules. Extensive supplementary material on VSM and vsm-box is available at https://vsmjs.github.io.">
+        <i class="small fa fa-envelope"></i></a>
+        <a target="_blank" href="https://twitter.com/intent/tweet?text=VSM-box%3A+General-purpose+Interface+for+Biocuration+and+Knowledge+Representation+%40Preprints_org&url=https%3A%2F%2Fwww.preprints.org%2Fmanuscript%2F202007.0557%2Fv1">
+        <i class="small social fa fa-twitter"></i></a>
+        <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fwww.preprints.org%2Fmanuscript%2F202007.0557%2Fv1&title=VSM-box%3A+General-purpose+Interface+for+Biocuration+and+Knowledge+Representation&summary=VSM+is+a+recently+introduced+method+for+entering+and+displaying+any+type+of+knowledge%2C+in+a+form+that+is+both+semantically+precise+for+computation+and+intuitive+for+human+understanding.+VSM+is+the+combination+of+a+new+semantic+model%2C+and+the+design+f+%5B...%5D&source=https%3A%2F%2Fwww.preprints.org">
+        <i class="small social fa fa-linkedin"></i></a>
+        <a target="_blank" href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fwww.preprints.org%2Fmanuscript%2F202007.0557%2Fv1">
+        <i class="small social fa fa-facebook"></i></a>
+      </span>
+      <span>
+        <a href="https://www.preprints.org/manuscript/202007.0557">Cite</a>
+    </div>
+  <li>
+    <a href="https://github.com/vsmjs">Vsm<span style="font-size: 4.5px"> </span>js</a>
+    organization on GitHub : &nbsp;see the Readmes of these modules:
+    <div class="li-footer modules" style="width: 395px; line-height: 1.64em; margin-top: -0.2em;"
+      ><span><a href="https://github.com/vsmjs/vsm-dictionary">vsm-box</a></span
+      ><span><a href="https://github.com/vsmjs/vsm-dictionary">vsm-dictionary</a></span
+      ><span><a href="https://github.com/vsmjs/vsm-dictionary-local">-local</a></span
+      ><span><a href="https://github.com/vsmjs/vsm-dictionary-remote-demo">-remote-demo</a></span
+      ><span><a href="https://github.com/vsmjs/vsm-dictionary-cacher">-cacher</a></span
+      ><span><a href="https://github.com/vsmjs/vsm-dictionary-combiner">-combiner</a></span
+      ><span><a href="https://github.com/vsmjs/vsm-autocomplete">vsm&#8209;autocomplete</a></span
+      ><span><a href="https://github.com/vsmjs/vsm-json-pretty">vsm-json-pretty</a></span
+      ><span class="info"><a href="https://github.com/vsmjs/string-style-html">string-style-html</a></span
+      ><span><a href="https://github.com/vsmjs/vsm-to-rdf">vsm-to-rdf</a></span
+      >
+      <!--
+      <span class="info"><br><a href="https://github.com/stcruy/to-exponential">to-exponential</a></span
+      ><span class="info"><a href="https://github.com/stcruy/building-a-reusable-vue-web-component">building-a-&hellip;component</a></span>
+      -->
+    </div>
+  <li>
+    <span class="demo-note"><a href="#vsm-intro-code">code-demo</a>, see below</span>
+  </ul>
+
+  <li>
+    <b>Demo</b>:
+    <ul>
+    <li>
+      <b><a href="demo"><u>Live demo</u></a></b> of a vsm-box.
+      <span class="info">(&srarr; It's the smaller rectangle on top).</span>
+      <div class="li-footer" style="width: 395px; line-height: 22px; margin-top: -0.12em;"
+        ><span>+ version with: <a href="demo/fig">fig export</a></span
+        ><span><a href="demo/rdf">rdf export</a></span>
+      </div>
+    <li>
+      Many <a href="https://vsmjs.github.io/vsm-pages/examples">VSM examples</a>.
+    </ul>
+
+  <li>
+    <b>Use in/of these projects</b>:
+    <ul>
+    <li>
+      <b><a href="https://github.com/UniBioDicts">UniBioDicts</a></b> organisation:<br>
+      a collection of modules for Unified access to Biological
+      Dictionary data, served from disparate terminology providers.
+      <span class="info">(For use in VSM-boxes).</span>
+      <div class="li-footer paper">
+        <span>
+          Paper :&nbsp;
+          <a href="https://www.preprints.org/manuscript/202007.0586">preprint</a></span>
+        <span>
+          <a href="https://www.preprints.org/manuscript/202007.0586/v1/download">PDF</a></span>
+        <span>
+          <a href="https://www.preprints.org/manuscript/202007.0586">Cite</a>
+      </div>
+
+    <li>
+      <b><a href="https://mi2cast.github.io/causalBuilder">causalBuilder</a></b>:<br>
+      interface for building VSM-templates for molecular biologists, so they
+      can create structured knowledge following the
+      <a href="https://doi.org/10.1093/bioinformatics/btaa622">MI2CAST</a>
+      standard.
+      <span class="info">(Uses VSM-box).</span>
+
+      <div class="li-footer paper">
+        <span>
+          Paper :&nbsp;
+          <a href="https://www.preprints.org/manuscript/202007.0622">preprint</a></span>
+        <span>
+          <a href="https://www.preprints.org/manuscript/202007.0622/v1/download">PDF</a></span>
+        <span>
+          <a href="https://www.preprints.org/manuscript/202007.0622">Cite</a>
+      </div>
+
+    <li style="margin-top: 0.23em">
+      <b>SciCura</b>:
+      <ul>
+      <li style="margin-top: -0.2em">
+        <a href="http://demo.scicura.org">SciCura v1, demo section</a>
+          <span class="info">(&srarr; select a template at the top left).</span>
+          Used for a collaborative curation project at NTNU university.
+        </span>
+      <li>
+        <a href="https://vsmjs.github.io/vsm-pages/scicura">SciCura v1 to v2</a>:
+        draft description.
+      </ul>
+    </ul>
+
+  <li>
+    <b>Connection to other technologies</b>:
+    <ul>
+    <li>
+      <b><a href="https://github.com/vsmjs/vsm-to-rdf">VSM to RDF</a></b>:
+      translation of VSM-sentence structures to RDF
+      <span class="info">(draft).</span>
+    <li>
+      Output to e.g. the
+      <a href="https://doi.org/10.1093/bioinformatics/btz132">PSI-MITAB2.8</a>
+      format
+      <span class="info">(via causalBuilder).</span>
+    </ul>
+
+  <li>
+    <b>Request</b>:
+      <p style="background-color:#fafafa; border: 1px solid #ddd;
+        border-radius: 10px; margin: 4px 0 0 0; padding: 8px 12px;">
+      VSM’s creator has <b>no salary</b> (again) and has to work for free &nbsp;:°(
+      <br style="margin-bottom: 7px">
+      Society need scientists, and scientists need patrons.
+      <br style="margin-bottom: 2px">
+      <b><u>Please</u> support Steven</b> on
+      <a href="https://patreon.com/stevencruy">Patreon</a>,
+      <a href="https://github.com/sponsors/stcruy">GitHub Sponsors</a>, or
+      <a href="https://paypal.me/stcruy">Paypal</a>.
+    </p>
+
+</ul>
+
+
+<br style="margin-top: 20px;"><hr><br>
+
+
+<a name="vsm-intro-interface"></a>
 <p>
 Examples of how to use a vsm-box, or read its content.
 Full information is <a href="https://github.com/vsmjs/vsm-box">here</a>.
@@ -97,12 +397,14 @@ Full information is <a href="https://github.com/vsmjs/vsm-box">here</a>.
 
 <br>
 <p>
-For full information, see vsm-box's <a href="https://github.com/vsmjs/vsm-box">readme</a>.
+For full information, see vsm-box's <a href="https://github.com/vsmjs/vsm-box">Readme</a>
+and documentation.
 </p>
 
 <br><hr><br>
 
 
+<a name="vsm-intro-code"></a>
 <p>
 It is easy to use a vsm-box in your project.
 For example: paste this in a file called 'test.html', and open it in your browser:
