@@ -1,6 +1,6 @@
-# vsmjs
+# VSM
 
-See how VSM works on https://vsmjs.github.io/vsm-pages
+Read about VSM on https://vsm.github.io
 
 ## License
 
