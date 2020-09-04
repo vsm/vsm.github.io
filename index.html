@@ -520,7 +520,7 @@ For example: paste this in a file called 'test.html', and open it in your browse
   };<i>*/</i>
 
 
-  <i>// 5. <u>Receive</u> vsm-box content updates. Here we show its data-content live in the textfield below it.</i>
+  <i>// 5) <u>Receive</u> vsm-box content updates. Here we show its data-content live in the textfield below it.</i>
   <b>vsmbox.addEventListener('change'</b>, showData);
   <a>function</a> showData(event) {  textarea.value = JSON.stringify(event.detail[0], null, 2)  }
   showData({ detail: [vsmbox.initialValue || { terms: [], conns: [] }] });
