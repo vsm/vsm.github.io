@@ -10,81 +10,109 @@
     line-height: 24px;
     margin-top: 60px;
   }
-  .main {
-    width: 560px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  #descr {
-    margin: 0 0 15px 0;
-  }
-  #numPlain {
-    margin: 0 4px;
-  }
-  #numPlain:empty {
+
+  body .hide {
     display: none;
   }
-  .code {
+
+  pre {
+    display: inline;
     font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
     font-size: 13.6px;
+    white-space: pre-wrap;
+    word-wrap: break-all;
     color: #24292e;
     background: #f3f4f4;
     padding: 2.72px 5.44px;
     border-radius: 6px;
   }
-  #numID {
-    margin: 0 6px;
-  }
-  #err {
-    display: block;
-    text-align: center;
-    font-size: 13px;
-  }
-  #err:empty {
-    display: none;
+
+  .main {
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+    word-wrap: break-word;
+    padding: 7px 13px;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
   }
 
-  #descr.noID {
-    display: inline-block;
-    margin: 0;
+  #descr,
+  #err {
+    margin: 0 0 15px 0;
   }
-  #descr.invalidID span {
+  #numPlain,
+  #numID {
+    margin: 0 7px;
+  }
+
+  #err,
+  #err * {
     color: red;
-    font-weight: normal;
+  }
+  #err .info {
+    margin: 3px 0 0 40px;
+    font-size: 13px;
+    line-height: 20px;
+  }
+  #err .info + .info {
+    margin-top: 0;
+  }
+  #err .info pre {
+    font-size: 12px;
+    background: #f9fafa;
+  }
+
+  .main .info {
+    font-size: 13.5px;
+    line-height: 20px;
+  }
+  #example {
+    margin-left: 9px;
+  }
+  #note {
+    margin-top: 2px;
   }
   </style>
 
 
   <script>
   window.onload = function() {
-    var [$descr, $numID, $numPlain, $err]
-      = ['descr', 'numID', 'numPlain', 'err']
-      .map(s => document.getElementById(s));
+    var $ = new Proxy(document, { get(d, p) { return d.getElementById(p); } });
 
-    var url = new URL(window.location.href);
-    var id  = (url.searchParams.get('id') || '') .replace(' ', '+');
+    var url = new URL(window.location.href .replace(/\+/g, '%2B'));
+    var id  = url.searchParams.get('id');
 
     if (!id) {
-      $descr.classList.add('noID');
-      $descr.innerHTML = 'Root';
+      show($.home);
+      show($.example);
     }
     else {
-      $numID.innerHTML = `https://w3id.org/00/${ id }`;
-
-      var regExp_validID = /^(0|-?[1-9](\.\d*[1-9])?)e(\+0|[+-][1-9]\d*)$/;
+      var regExp_validID = /^(0e\+0|-?[1-9](\.\d*[1-9])?e(\+0|[+-][1-9]\d*))$/;
       var validID = regExp_validID.test(id);
+
+      var nr         = +id;
+      var nrBackToID = nr.toExponential();
+
       if (validID) {
-        var nr = +id;
-        if (!Number.isNaN(nr)  &&  nr !== 0  &&  Math.abs(nr) !== Infinity  &&
-            nr.toString() !== id ) {
-          $numPlain.innerHTML = nr;  ///`‘${ nr }’`;
-        }
+        show($.descr);
+        $.numPlain.innerHTML = nrBackToID !== id ?  id :  nr
+          .toLocaleString('EN-us', { maximumSignificantDigits: 21 })
+          .replace(/,/g, '&#8239;');
+        $.numID   .innerHTML = `https://w3id.org/00/${ id }`;
       }
       else {
-        $err.innerHTML =
-          `(invalid ID: does not match ${ regExp_validID.toString() })`;
-        $descr.classList.add('invalidID');
+        show($.err);
+        $.errNumID.innerHTML = id;
+        if (regExp_validID.test(nrBackToID)) {
+          show($.errSuggest);
+          $.errSuggestNumID.innerHTML = nrBackToID;
+        }
+        $.regex   .innerHTML = regExp_validID.toString();
       }
+    }
+
+    function show(el) {
+      el.classList.remove('hide');
     }
   }
   </script>
@@ -93,15 +121,40 @@
 
 <body>
   <div class="main">
-    <div id="descr">
-      The number <span id="numPlain"></span>
-      with ID <span id="numID" class="code"></span>
-      <span id="err"></span>
-    </div>
+    <span class="alternatives">
+      <span id="home" class="hide">
+        Home
+      </span>
+      <div id="descr" class="hide">
+        This is the number <span id="numPlain"></span>
+        with ID <pre id="numID"></pre>
+      </div>
+      <div id="err" class="hide">
+        The identifier
+        <pre id="errNumID"></pre> is not a valid ID
+        <div id="errReason" class="info">
+          (it does not match <pre id="regex"></pre>)
+        </div>
+        <div id="errSuggest" class="info hide">
+          (did you mean <pre id="errSuggestNumID"></pre>?)
+        </div>
+      </div>
+    </span>
     of the <b>Controlled Vocabulary for Real Numbers</b>,<br>
-    where numbers get a string ID based on scientific notation.<br>
+    which gives numbers a string ID based on scientific notation.<br>
     <br>
-    See: github.com/perma-id/<a href="https://github.com/perma-id/w3id.org/tree/master/00">w3id.org/00</a>.
+    <div class="info">
+      Read more on:&nbsp; github.com/perma-id –> <a
+        href="https://github.com/perma-id/w3id.org/tree/master/00"
+        >w3id.org/00</a>.
+      <span id="example" class="hide">
+        Example for 123: …<a href="https://w3id.org/00/1.23e+2">1.23e+2</a>.
+      </span>
+      <div id="note" class="info">
+        Note:&nbsp;
+        this page can also serve as a template for other generative CVs.
+      </div>
+    </div>
   </div>
 </body>
 </html>
