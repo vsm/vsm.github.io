@@ -36,6 +36,26 @@
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
   }
 
+  .syntax-diagram {
+    cursor: pointer;
+    width: 80px;
+    margin-top: 5px;
+    padding: 5px 10px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 0;
+    user-select: none;
+    background: #fff;
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .syntax-diagram.large {
+    position: absolute;
+    left: 10%;
+    width: 80%;
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+  }
+
   #descr,
   #err {
     margin: 0 0 15px 0;
@@ -141,7 +161,10 @@
       </div>
     </span>
     of the <b>Controlled Vocabulary for Real Numbers</b>,<br>
-    which gives numbers a string ID based on scientific notation.<br>
+    which gives numbers a string ID based on scientific notation:
+    <div class="syntax-diagram" onclick="javascript:this.classList.toggle('large');">
+      <img src="00-id-syntax-diagram.svg">
+    </div>
     <br>
     <div class="info">
       Read more on:&nbsp; github.com/perma-id –> <a
