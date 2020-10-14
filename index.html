@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <style>
   body {
-    margin: 40px 0 0 0;
+    margin: 35px 0 0 0;
     font-family: 'Roboto', Arial, Helvetica, Tahoma, Calibri, Verdana, sans-serif;
     font-size: 14.5px;
     line-height: 24.5px;
@@ -37,12 +37,26 @@
     font-size: 30px;
     margin-bottom: 32px;
   }
+  h1 span {
+    font-size: 15px;
+    font-weight: normal;
+    color: #bbb;
+    margin-left: 1.1em;
+  }
   .h1-sub {
     font-size: 16px;
     font-weight: bold;
     margin-bottom: 36px;
   }
-  .h1-subsub {
+  .h1-sub2 {
+    font-size: 15px;
+    color: #222;
+    text-align: justify;
+    margin: 0 -10px 36px 0;
+    padding: 0 0 0 25px;
+    border-left: 5px solid #e4e4e4;
+  }
+  .h1-sub3 {
     margin-bottom: 0.92em;
   }
   ul {
@@ -151,6 +165,18 @@
     margin: 4px 0 0 0;
     padding: 8px 12px;
   }
+  pre.code-example   {
+    font: 12px Consolas, monospace;
+    line-height: 14px;
+  }
+  pre.code-example i {
+    font-style: normal;
+    color: #777;
+  }
+  pre.code-example a {
+    text-decoration: none;
+    color: #00a;
+  }
 </style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2886799-5"></script>
 <script>
@@ -164,14 +190,27 @@
 
 <div class="div-intro">
 
-<h1>VSM</h1>
+<h1>VSM<span>(Visual Syntax Method)</span></h1>
 
 <div class="h1-sub">
 Translating any knowledge into a computable form, made easy.
 </div>
 
-<div class="h1-subsub">
-Here we collect all information about VSM:
+<div class="h1-sub2"><p>
+VSM enables people to capture knowledge in a computable form, ‘like they think’.
+VSM&nbsp;both reflects how humans <b>represent knowledge</b> in their minds, structurally,
+and provides a <b>user interface</b> to enter knowledge in that intuitive form.
+</p><p>
+VSM is thus a <b>human-centered</b> method for capturing
+<b>context-rich</b>, <b>multi-topic</b>, <b>computable knowledge</b>
+– which can still be converted to any existing format.
+</p><p>
+VSM’s elegant knowledge representation may also
+serve as a practical basis in the&nbsp;design of <b>semantic machine learning</b>.
+</p></div>
+
+<div class="h1-sub3">
+Here we collect all information on VSM:
 </div>
 
 
@@ -182,11 +221,11 @@ Here we collect all information about VSM:
   <li>
     ‘<a href="https://vsm.github.io/vsm-pages/intro"
     >How to easily plant complex ideas into computers</a>’
-    <span class="info push">(blog, 2018)</span>
+    <span class="info push">(Long blog, 2018)</span>
   <li>
     ‘<a href="https://www.ntnutechzone.no/en/2019/06/a-bold-vision-for-computable-scientific-knowledge"
     >A bold vision for computable scientific knowledge</a>’
-    <span class="info push">(blog, 2019)</span>
+    <span class="info push">(Short blog, 2019)</span>
   </ul>
 
 <li>
@@ -195,7 +234,7 @@ Here we collect all information about VSM:
   <li>
     <b>‘<a href="https://www.preprints.org/manuscript/202007.0486"
     >Intuitive Representation of Computable Knowledge</a>’</b>
-    <span class="info push">(Preprint, 2020)</span>
+    <span class="info push">(Main Paper — Preprint, 2020)</span>
     <div class="li-footer paper">
       Paper :&nbsp;
       <span>
@@ -262,13 +301,14 @@ Here we collect all information about VSM:
     <b>Demos</b>:
     <ul class="demos">
     <li>
-      Live <a href="demo"><b>Demo</b> of a vsm-box</a> &nbsp; (= user interface for VSM’s semantic model).
+      Live &nbsp;<a href="demo"><b>Demo</b> + Toolkit</a>&nbsp; of vsm-box
+      &nbsp; (= the user interface enabling VSM semantics).
       <br>
       ↪ It has examples, a JSON view, RDF export, and PNG and SVG image export.
     <li>
       Many <a href="https://vsm.github.io/vsm-pages/examples">editable, explained examples</a>.
     <li>
-      causalBuilder templates (see below).
+      causalBuilder templates (see links below).
     </ul>
 
   <li>
@@ -316,6 +356,7 @@ Here we collect all information about VSM:
       ><span><a href="https://github.com/vsm/vsm-autocomplete">vsm&#8209;autocomplete</a></span
       ><span class="smaller"><a href="https://github.com/vsm/vsm-json-pretty">vsm-json-pretty</a></span
       ><span class="smaller"><a href="https://github.com/vsm/string-style-html">string-style-html</a></span
+      ><span class="smaller"><a href="https://github.com/vsm/demo">vsm-box demo</a></span
       ><span><a href="https://github.com/vsm/vsm-to-rdf">vsm-to-rdf</a></span
       >
       <!--
@@ -324,7 +365,7 @@ Here we collect all information about VSM:
       -->
     </div>
   <li>
-    <span class="demo-note"><a href="#vsm-intro-code">Code-use demo</a>,
+    <span class="demo-note"><a href="#vsm-intro-code">Code-use demo/intro</a>,
     see below.</span>
   </ul>
 
@@ -408,10 +449,13 @@ Here we collect all information about VSM:
     <b>Funding</b>:
     <div class="funding">
       <div style="margin: 0 0 0 0;">
-        Dr. Steven V. is working <b>without salary</b> as he passed the end of a grant once more (Dec 2019–now) (as in 2011–2016).
+        Dr. Steven V. is working <b>without salary</b> since temporary funding ended again. And it hurts.
+      </div>
+      <div style="margin: 0.06em 0 0 0;">
+        Self-funded: Dec 2019–now. &nbsp;(As in 2011–2016).
       </div>
       <div style="margin: 0.37em 0 0 0;">
-        If you think VSM is valuable: consider <b>including me on your next grant proposal</b>!
+        If you think VSM is valuable:&thinsp; <b>include S.V. or VSM in your next grant proposal</b>!
       </div>
       <div style="margin: 0.06em 0 0 0;">
         Esp. if you use VSM: consider showing support on
@@ -476,12 +520,7 @@ For example: paste this in a file called 'test.html', and open it in your browse
 
 
 
-<style>
-  pre.code i { font-style: normal; color: #777; }
-  pre.code a { text-decoration: none; color: #00a; }
-</style>
-
-<pre class="code" style="font-size: 12px; line-height: 14px;">
+<pre class="code-example">
 &lt;!doctype html&gt;
 &lt;html&gt;
 <a>&lt;head&gt;</a>
@@ -503,7 +542,6 @@ For example: paste this in a file called 'test.html', and open it in your browse
   <i>// 3) <u>Connect</u> the vsm-box to a vsm-dictionary. Here we make one that provides demo-data.</i>
   <i>//    Or we could use online vocabulary data, like with vsm-dictionary-bioportal etc.</i>
   <b>vsmbox.vsmDictionary = new VsmDictionary</b>Local({
-    refTerms: ['it'],
     dictData: [
       { id: 'http://dem.o/A',  name: 'Demo dictionary A',
         entries: [
@@ -511,7 +549,8 @@ For example: paste this in a file called 'test.html', and open it in your browse
           { id: 'http://dem.o/A/A:02', terms: [{ str: 'eats' }], descr: 'an eating activity' }
         ]
       }
-    ]
+    ],
+    refTerms: ['it']
   });
 
 
