@@ -13,6 +13,9 @@
     line-height: 24.5px;
     height: 26px;
   }
+  .hidden {
+    display: none;
+  }
   a, a:hover, a:visited {
     color: #00a;
     text-decoration: none;
@@ -93,7 +96,7 @@
   ul.projs > li:first-child {
     margin-top: 0.45em;
   }
-  ul.scicura > li:first-child {
+  ul.proj-sublist > li:first-child {
     margin-top: -0.2em;
   }
   li span.info {
@@ -162,6 +165,9 @@
   .paper-abstract {
     display: none;
   }
+  .code-text {
+    font-family: Consolas, monospace;
+  }
   .funding {
     font-size: 13px;
     line-height: 1.4em;
@@ -171,8 +177,14 @@
     margin: 4px 0 0 0;
     padding: 8px 12px;
   }
-  .funding .emph {
-    font-size: 14.5px;
+  .funding-more-link {
+    color: #a8a8a8;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .smaller-arrow {
+    font-size: 12px;
+    margin: 0 6px 0 0;
   }
   pre.code-example   {
     font: 12px Consolas, monospace;
@@ -291,10 +303,18 @@ Here we collect all information on VSM:
     </div>
   <li>
     <span class="demo-note"><a href="#vsm-intro-interface"
-    >Animated demo/intro</a>, see below.</span>
+    ><b>GIF</b></a>:
+    entering knowledge into computable statements</span>
+    <span class="info">(in ‘vsm-box’ interface).</span>
   <li>
-    Many explained <a href="https://vsm.github.io/vsm-pages/examples">VSM examples</a>
-    <span class="info">(using an earlier vsm-box prototype).</span>
+    <a href="https://www.youtube.com/watch?v=0kHWBZIL04E"><b>Video animation</b></a>:
+    automatically converting text to VSM
+    <span class="info">(ongoing research).</span>
+  <!--
+  <li>
+    Many explained <a href="https://vsm.github.io/vsm-pages/examples">VSM examples</a>.
+    <span class="info">(with an earlier vsm-box prototype).</span>
+  -->
   <!--
   <li>
     <span class="info">
@@ -307,28 +327,24 @@ Here we collect all information on VSM:
   </ul>
 
   <li>
-    <b>Demos</b>:
-    <ul class="demos">
-    <li>
-      Live &nbsp;<a href="demo"><b>Demo</b> + Toolkit</a>&nbsp; of vsm-box
-      &nbsp; (= the user interface enabling VSM semantics).
-      <br>
-      ↪ It has examples, a JSON view, RDF export, and PNG and SVG image export.
-    <li>
-      Many <a href="https://vsm.github.io/vsm-pages/examples">editable, explained examples</a>.
-    <li>
-      Customizable templates for knowledge entry: see causalBuilder, below.
-    <li>
-      <a href="https://www.youtube.com/watch?v=0kHWBZIL04E">Animated video</a>:
-        How NLP may someday automatically encode knowledge into computable statements
-        (‘From natural language to VSM semantic structures’).
-    </ul>
+  <b>Demos</b>:
+  <ul class="demos">
+  <li>
+    Live &thinsp;<a href="demo"><b>Demo</b></a>&thinsp;
+    of the ‘<span class="code-text">vsm-box</span>’ user interface,&thinsp; which supports the VSM model.
+    <br>
+    &nbsp; + examples, JSON editor, RDF/SVG export.
+  <li>
+    Many <a href="https://vsm.github.io/vsm-pages/examples">editable, explained examples</a>.
+  <li>
+    Customizable templates for knowledge entry:&thinsp; see <a href="#causalBuilder">causalBuilder</a>, below.
+  </ul>
 
   <li>
   <b>Code</b>:
   <ul class="code">
   <li>
-    <b><a href="https://github.com/vsm/vsm-box">vsm-box</a> </b>:
+    <b><a href="https://github.com/vsm/vsm-box">vsm-box</a></b>:
     &nbsp;the user interface of VSM
     <span class="info">(as a &lt;vsm-box&gt; HTML-element)</span>
     <span class="info">(GitHub)</span>
@@ -363,11 +379,11 @@ Here we collect all information on VSM:
       </span>
     </div>
   <li>
-    <span class="demo-note"><a href="#vsm-intro-code">Code-use demo/intro</a>,
-    see below.</span>
+    <span class="demo-note"><a href="#vsm-intro-code">Code example</a>:
+    &nbsp;how to put a vsm-box on a web page.</span>
   <li>
-    <a href="https://github.com/vsm">vsm</a>
-    organization on GitHub : &nbsp;VSM's core enabling modules. &nbsp;See their Readme:
+    <a href="https://github.com/vsm">VSM GitHub-organization</a>:
+    &nbsp;the core modules enabling VSM. &nbsp;Their Readmes:
     <div class="li-footer modules"
       ><span><a href="https://github.com/vsm/vsm-box">vsm-box</a></span
       ><span><a href="https://github.com/vsm/vsm-dictionary">vsm-dictionary</a></span
@@ -394,7 +410,7 @@ Here we collect all information on VSM:
     <b>Use in other projects</b>:
     <ul class="projs">
     <li>
-      <b><a href="https://mi2cast.github.io/causalBuilder">causalBuilder</a></b>:<br>
+      <b><a name="causalBuilder" href="https://mi2cast.github.io/causalBuilder">causalBuilder</a></b>:<br>
       A web app that generates VSM-templates that follow the
       <a href="https://doi.org/10.1093/bioinformatics/btaa622">MI2CAST</a>
       standard,
@@ -416,6 +432,19 @@ Here we collect all information on VSM:
       </div>
 
     <li>
+      <b>NLP to VSM</b>:
+          <span class="info">(as part of
+            <a href="https://blah7.linkedannotation.org">BLAH7</a> hackathon</a>):</span>
+      <ul class="proj-sublist">
+      <li>
+        <a href="https://github.com/vsm/nlp-to-vsm">nlp-to-vsm</a> repo:
+        &nbsp;‘From natural language to VSM semantic structures’.
+      <li>
+        <a href="https://vsm.github.io/nlp-to-vsm">live&nbsp;demo</a> page
+        <span class="info">(pilot experiment).</span>
+      </ul>
+
+    <li>
       <b><a href="https://github.com/UniBioDicts">UniBioDicts</a></b> organization:<br>
       A collection of modules for Unified access to Biological
       Dictionary data, served from disparate terminology providers.
@@ -435,7 +464,7 @@ Here we collect all information on VSM:
 
     <li>
       <b>SciCura</b>:
-      <ul class="scicura">
+      <ul class="proj-sublist">
       <li>
         SciCura v1, see <a href="http://demo.scicura.org">demo section</a>
           <span class="info">(&slarr; select a template at the top left there);</span>
@@ -460,10 +489,7 @@ Here we collect all information on VSM:
       format
       <span class="info">(via causalBuilder).</span>
     <li>
-      <a href="https://github.com/vsm/nlp-to-vsm">NLP to VSM</a>:
-      ‘From natural language to VSM semantic structures’, with a
-      <b><a href="https://vsm.github.io/nlp-to-vsm">live&nbsp;demo</a></b> page
-      <span class="info">(ongoing work).</span>
+      NLP to VSM: see above.
     </ul>
 
   <!--
@@ -474,55 +500,75 @@ Here we collect all information on VSM:
   <li>
     <b>Funding</b>:
     <div class="funding">
-      <div style="margin: 0 0 0 0;">
-        &nbsp;&nbsp; <b><u>NO FUNDING</u></b> currently.
+      <div style="margin: 0.3em 0 0 0.7em;">
+        <b>No Funding</b> currently.&nbsp; Therefore please:
       </div>
-      <div style="margin: 0.5em 0 0 0;">
-        &nbsp;&nbsp; A <b>determination</b> to create something new
-        is often met with great uncertainty of making a living.&nbsp;
-        This is especially so in modern science, where also
-        <a target="_blank" href="https://www.nature.com/news/young-talented-and-fed-up-scientists-tell-their-stories-1.20872">
-        brutal conditions for fundraising can leave little time to do actual research</a>.
-        <br>
-        &nbsp;&nbsp; Despite this reality,&thinsp;
-        <a target="_blank" href="https://orcid.org/0000-0002-3136-7353">Dr. Steven V.</a>
-        chose to dedicate <b>the many years of deep work</b> it required,
-        to develop a new way forward to handle complex, contextualized knowledge—as this plays a central role in systems biology,
-        science in general, and AI.
-        <br>
-        &nbsp;&nbsp; His results are now receiving excellent feedback from peers,&thinsp;
-        but it naturally leaves him <b>without&nbsp;funding</b>: since Dec 2019, as in 2011–2016.&nbsp;
-        <br>
-        &nbsp;&nbsp; He is now writing grant proposals—without salary—for just <b>5–9%</b> chances of funding.&nbsp;
-        <br>
-        It is unfortunate for society as a whole,
-        that its dedicated scientists must spend so much of their brain-power like this.
+      <div style="margin: 0.4em 0 0 1.4em;">
+        <span class="smaller-arrow">►</span><b>In your next grant proposal:&thinsp; allocate funds</b> for VSM and S.V.
       </div>
-      <div style="margin: 0.5em 0 0 0;">
-        &nbsp;&nbsp; So to speed up the development of VSM and its applications:&thinsp;
+      <div style="margin: 0.3em 0 0 1.4em;">
+        <span class="smaller-arrow">►</span><b>Speak</b> about VSM:&thinsp; make others aware of its value.
       </div>
-      <div style="margin: 0.2em 0 0 0;">
-        &nbsp;&nbsp; &nbsp;&nbsp; ► <span class="emph"><b>Include <u>Steven Vercruysse</u> or <u>VSM</u>
-        in your next grant proposals&thinsp;!</b></span>
-      </div>
-      <div style="margin: 0.2em 0 0.2em 0;">
-        &nbsp;&nbsp; &nbsp;&nbsp; ► Or join in keeping SV &amp; VSM afloat via
+      <div style="margin: 0.3em 0 0 1.4em;">
+        <span class="smaller-arrow">►</span>Donate:&thinsp;
+        <a href="https://patreon.com/stevencruy">Patreon</a>,
         <a href="https://paypal.me/stcruy">Paypal</a>,
-        <a href="https://patreon.com/stevencruy">Patreon</a>, or
-        <a href="https://github.com/sponsors/stcruy">GitHub <b>Sponsors</b></a>.&thinsp;
+        <a href="https://github.com/sponsors/stcruy">GH Sponsors</a>.
+      </div>
+      <div style="margin: 0.35em 0 0.2em 1.4em;">
+        <span class="funding-more-link" href="javascript:void(0);" onclick="(() => {
+            document.getElementsByClassName('funding-more')[0].classList.toggle('hidden');
+            this.innerHTML = this.innerHTML == 'more' ? '▼' : 'more';
+          })()"
+        >more</span>
+      </div>
+      <div class="funding-more hidden" style="margin: 0.8em 0 0 0;">
+        <div style="margin: 1em 0 0 0;">
+          A <b>determination</b> to create something truly new
+          is often met with great uncertainty of making a living.&nbsp;
+          This is especially so in science, where
+          <a target="_blank" href="https://www.nature.com/news/young-talented-and-fed-up-scientists-tell-their-stories-1.20872">
+          brutal conditions for fundraising can leave little time to do actual research</a>.
+        </div>
+        <div style="margin: 0.5em 0 0 0;">
+          Despite this reality,&thinsp;
+          <a target="_blank" href="https://orcid.org/0000-0002-3136-7353">Dr. Steven V.</a>
+          chose to do <b>the many years of deep work</b> it required
+          to&nbsp;develop a new way forward to handle complex, contextualized knowledge digitally.
+          Because computable knowledge plays a central role in systems biology, in science generally,
+          and in tomorrow’s AI.
+          And&nbsp;it must be made practical to use for everyone.
+        </div>
+        <div style="margin: 0.5em 0 0 0;">
+          His results are now receiving excellent feedback from peers,&thinsp;
+          but it leaves him for large periods <b>without&nbsp;funding</b>: since Dec 2019, as in 2011–2016.
+          &thinsp;He is now expected to write discouraging amounts of grant proposals—without salary—for <b>tiny</b> chances of funding,
+          instead of doing the real innovation work that he's actually good at.
+        </div>
+        <div style="margin: 0.5em 0 0 0;">
+          It is unfortunate that a modern society makes its dedicated scientists
+          waste so much of their talent on defending their own existence.
+        </div>
+        <div style="margin: 0.5em 0 0.75em 0;">
+          S.V. is <b>looking for a reliable, long-term funding solution</b>,
+          to keep contributing to solving the world's toughest problems
+          on&nbsp;a&nbsp;computational intelligence scale.&thinsp; —&thinsp;
+          Contact <a href="https://stcruy.com">me</a>.
+        </div>
       </div>
     </div>
 
 </ul>
 
 
-<br style="margin-top: 20px;"><hr><br>
+<br><br><hr><br>
 
 
 <a name="vsm-intro-interface"></a>
 <p>
-Overview and examples: how to create and read computable knowledge in a vsm-box.
+Overview and examples:<br><b>How to create and read computable knowledge in a vsm-box.</b>
 </p>
+<br>
 <br>
 
 </div>
@@ -561,8 +607,8 @@ Overview and examples: how to create and read computable knowledge in a vsm-box.
 
 <a name="vsm-intro-code"></a>
 <p>
-It is easy to use a vsm-box in your project.
-For example: paste this in a file called 'test.html', and open it in your browser:
+<b>It is easy to use a vsm-box in your project.</b>
+<br>For example: paste this in a file called 'test.html', and open it in your browser:
 </p>
 <br>
 
@@ -588,7 +634,7 @@ For example: paste this in a file called 'test.html', and open it in your browse
 
 <a>&lt;script&gt;</a>
   <i>// 3) <u>Connect</u> the vsm-box to a vsm-dictionary. Here we make one that provides demo-data.</i>
-  <i>//    Or we could use online vocabulary data, like with vsm-dictionary-bioportal etc.</i>
+  <i>//    Or we could use online vocabulary data, like `vsm-dictionary-bioportal` etc.</i>
   <b>vsmbox.vsmDictionary = new VsmDictionary</b>Local({
     dictData: [
       { id: 'http://dem.o/A',  name: 'Demo dictionary A',
@@ -609,10 +655,10 @@ For example: paste this in a file called 'test.html', and open it in your browse
   };<i>*/</i>
 
 
-  <i>// 5) <u>Receive</u> vsm-box content updates. Here we show its data-content live in the textfield below it.</i>
+  <i>// 5) <u>Listen</u> to vsm-box content updates. Here we show its data-content live in the textfield below it.</i>
   <b>vsmbox.addEventListener('change'</b>, showData);
   <a>function</a> showData(event) {  textarea.value = JSON.stringify(event.detail[0], null, 2)  }
-  showData({ detail: [vsmbox.initialValue || { terms: [], conns: [] }] });
+  showData({ detail: [vsmbox.initialValue || { terms: [], conns: [] }] });  <i>// Show initial content.</i>
 <a>&lt;/script&gt;</a>
 &lt;/html&gt;</pre>
 
