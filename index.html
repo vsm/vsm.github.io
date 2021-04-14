@@ -618,9 +618,10 @@ Overview and examples:<br><b>How to create and read computable knowledge in a vs
 &lt;!doctype html&gt;
 &lt;html&gt;
 <a>&lt;head&gt;</a>
+  &lt;meta charset="utf-8"&gt;
   <i>&lt;!-- 1) <u>Load</u> the vsm-box module, and a vsm-dictionary to provide terms+identifiers. --&gt;</i>
-  <b>&lt;script src="https://unpkg.com/vsm-box@^1.0.0/dist/vsm-box.standalone.min.js"&gt;&lt;/script&gt;</b>
-  <b>&lt;script src="https://unpkg.com/vsm-dictionary-local@^2.6.0/dist/vsm-dictionary-local.min.js"&gt;&lt;/script&gt;</b>
+  <b>&lt;script src="https://cdn.jsdelivr.net/npm/vsm-box@^1.0.0/dist/vsm-box.standalone.min.js"&gt;&lt;/script&gt;</b>
+  <b>&lt;script src="https://cdn.jsdelivr.net/npm/vsm-dictionary-local@^2.6.0/dist/vsm-dictionary-local.min.js"&gt;&lt;/script&gt;</b>
 <a>&lt;/head&gt;</a>
 
 
@@ -628,22 +629,20 @@ Overview and examples:<br><b>How to create and read computable knowledge in a vs
   <i>&lt;!-- 2) <u>Place</u> a vsm-box element on the web page. --&gt;</i>
   <b>&lt;vsm-box</b> id=vsmbox autofocus=true<b>&gt;&lt;/vsm-box&gt;</b>
 
-  <span style=font-size:0px;>&lt;br&gt; </span>&lt;textarea id=textarea readonly rows=31 cols=45&gt;&lt;/textarea&gt;  <i>&lt;!-- (Textfield to show vsm-box data). --&gt;</i>
+  <span style=font-size:0px;>&lt;br&gt; </span>&lt;textarea id=textarea readonly rows=31 cols=45&gt;&lt;/textarea&gt;  <i>&lt;!-- (Textfield for showing vsm-box's data content). --&gt;</i>
 <a>&lt;/body&gt;</a>
 
 
 <a>&lt;script&gt;</a>
-  <i>// 3) <u>Connect</u> the vsm-box to a vsm-dictionary. Here we make one that provides demo-data.</i>
-  <i>//    Or we could use online vocabulary data, like `vsm-dictionary-bioportal` etc.</i>
+  <i>// 3) <u>Connect</u> the vsm-box to a vsm-dictionary (one or more) :</i>
+  <i>//    - use online vocabulary data (via `vsm-dictionary-bioportal`, `vsm-dictionary-uniprot` etc.)</i>
+  <i>//    - or <span style="font-style: italic;">here</span> we make one that provides demo-data:</i>
   <b>vsmbox.vsmDictionary = new VsmDictionary</b>Local({
-    dictData: [
-      { id: 'http://dem.o/A',  name: 'Demo dictionary A',
-        entries: [
-          { id: 'http://dem.o/A/A:01', terms: [{ str: 'Jo' }, { str: 'Joanna' }] },  <i>// Synonyms.</i>
-          { id: 'http://dem.o/A/A:02', terms: [{ str: 'eats' }], descr: 'an eating activity' }
-        ]
-      }
-    ],
+    dictData: [ { id:      'http://dem.o/A',
+                  name:    'Demo dictionary A',
+                  entries: [ { id: 'http://dem.o/A/A:01', terms: [ { str: 'Jo' }, { str: 'Joanna' } ] },  <i>// Two synonyms.</i>
+                             { id: 'http://dem.o/A/A:02', terms: [ { str: 'eats' } ], descr: 'an eating activity' }  ]
+                } ],
     refTerms: ['it']
   });
 
@@ -657,6 +656,7 @@ Overview and examples:<br><b>How to create and read computable knowledge in a vs
 
   <i>// 5) <u>Listen</u> to vsm-box content updates. Here we show its data-content live in the textfield below it.</i>
   <b>vsmbox.addEventListener('change'</b>, showData);
+
   <a>function</a> showData(event) {  textarea.value = JSON.stringify(event.detail[0], null, 2)  }
   showData({ detail: [vsmbox.initialValue || { terms: [], conns: [] }] });  <i>// Show initial content.</i>
 <a>&lt;/script&gt;</a>
